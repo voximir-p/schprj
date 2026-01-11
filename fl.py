@@ -2,7 +2,7 @@ from flask import Flask, send_file
 
 app = Flask(__name__)
 # send file as requested
-@app.route("/<path:filename>")
+@app.route("/tos")
 def serve_file(filename):
     return send_file(filename)
 

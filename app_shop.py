@@ -25,6 +25,7 @@ async def translate_text(txt):
 
 
 def predict_emotion(sentence: str, translate: bool) -> str:
+    sentence = str(hash(sentence))
     date = (dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=7)).strftime(
         "%d/%m/%Y, %H:%M:%S"
     )
@@ -61,11 +62,11 @@ def predict_emotion(sentence: str, translate: bool) -> str:
 with gr.Blocks() as iface:
     gr.Markdown("## โปรแกรมคาดการณ์อารมณ์จากข้อความ")
     sentence = gr.Textbox(lines=2, placeholder="ใส่ข้อความที่นี่", label="ใส่ข้อความ")
-    translate = gr.Checkbox(label="ไม่ใช่ภาษาอังกฤษ", value=True)
+    # translate = gr.Checkbox(label="ไม่ใช่ภาษาอังกฤษ", value=True)
     output = gr.HTML(label="ผลการคาดการณ์")
     predict_button = gr.Button("เริ่มต้น")
     predict_button.click(
-        fn=predict_emotion, inputs=[sentence, translate], outputs=output
+        fn=predict_emotion, inputs=[sentence], outputs=output
     )
 
     iface.launch(server_name="172.31.24.141", server_port=80)
