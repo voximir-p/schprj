@@ -1,5 +1,3 @@
-import asyncio
-
 import gradio as gr
 import datetime as dt
 import torch.nn.functional as F
@@ -17,13 +15,12 @@ model.config.id2label = {
 }
 
 
-def predict_emotion(sentence: str, translate: bool) -> str:
+def predict_emotion(sentence: str) -> str:
     date = (dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=7)).strftime(
         "%d/%m/%Y, %H:%M:%S"
     )
     print("New prediction request:", date)
-    if translate:
-        sentence = asyncio.run(translate_text(sentence))
+
     inputs = tokenizer(sentence.strip()[:512], return_tensors="pt")
     logits = model(**inputs).logits
     probs = F.softmax(logits, dim=-1) * 100
