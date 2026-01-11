@@ -43,12 +43,13 @@ def predict_emotion(sentence: str) -> str:
         "<ul style='list-style-type:none; font-size:24px; text-align:center;'>"
     )
 
-    acc = 0
+    acc = 0.0
     for emotion, prob in other_emotions_sorted:
         if emotion not in ("รัก", "ตกใจ", "กลัว"):
-            acc += prob
             html_output += f"<li>{emotion}: {prob:.2f}%</li>"
-    html_output += f"<li>อื่น ๆ: {(100 - acc):.2f}%</li>"
+        else:
+            acc += prob
+    html_output += f"<li>อื่น ๆ: {acc:.2f}%</li>"
     html_output += "</ul>"
     return html_output
 
