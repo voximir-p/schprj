@@ -1,7 +1,7 @@
 from flask import Flask, send_file
 
 app = Flask(__name__)
-@app.route("/verify", methods=["GET"])
+@app.route("/verify/tiktok0h2WcHjMBYRbT1AukihT6pD2JvElI19D.txt", methods=["GET"])
 def verify():
     return send_file("tiktok0h2WcHjMBYRbT1AukihT6pD2JvElI19D.txt")
 
