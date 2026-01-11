@@ -1,3 +1,4 @@
 transformers==4.48.3
 googletrans==4.0.2
 gradio==5.15.0
+flask
