@@ -25,7 +25,7 @@ async def translate_text(txt):
 
 
 def predict_emotion(sentence: str, translate: bool) -> str:
-    sentence = str(hash(sentence))
+    sentence = sentence.strip()[:512]
     date = (dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=7)).strftime(
         "%d/%m/%Y, %H:%M:%S"
     )
