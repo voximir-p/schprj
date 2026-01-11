@@ -3,7 +3,6 @@ import asyncio
 import gradio as gr
 import datetime as dt
 import torch.nn.functional as F
-from googletrans import Translator
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 model = AutoModelForSequenceClassification.from_pretrained("model")
@@ -16,12 +15,6 @@ model.config.id2label = {
     4: "กลัว",
     5: "ตกใจ",
 }
-
-
-async def translate_text(txt):
-    async with Translator() as translator:
-        out = await translator.translate(txt, dest="en")
-    return out.text
 
 
 def predict_emotion(sentence: str, translate: bool) -> str:
@@ -53,19 +46,17 @@ def predict_emotion(sentence: str, translate: bool) -> str:
         "<ul style='list-style-type:none; font-size:24px; text-align:center;'>"
     )
     for emotion, prob in other_emotions_sorted:
-        html_output += f"<li>{emotion}: {prob:.2f}%</li>"
+        if emotion not in ("รัก", "ตกใจ", "กลัว"):
+            html_output += f"<li>{emotion}: {prob:.2f}%</li>"
     html_output += "</ul>"
     return html_output
 
 
 with gr.Blocks() as iface:
     gr.Markdown("## โปรแกรมคาดการณ์อารมณ์จากข้อความ")
-    sentence = gr.Textbox(lines=2, placeholder="ใส่ข้อความที่นี่", label="ใส่ข้อความ")
-    # translate = gr.Checkbox(label="ไม่ใช่ภาษาอังกฤษ", value=True)
+    sentence = gr.Textbox(lines=1, placeholder="ใส่ URL ที่นี่", label="ใส่ URL")
     output = gr.HTML(label="ผลการคาดการณ์")
     predict_button = gr.Button("เริ่มต้น")
-    predict_button.click(
-        fn=predict_emotion, inputs=[sentence], outputs=output
-    )
+    predict_button.click(fn=predict_emotion, inputs=sentence, outputs=output)
 
     iface.launch(server_name="172.31.24.141", server_port=80)
